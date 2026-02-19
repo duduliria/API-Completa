@@ -22,6 +22,14 @@ app.post("/cadastro", (req, res) => {
     });
 });
 
+app.get("/", (req, res) => {
+  Produto.findAll().then((produtos) => {
+    res.send({ produtos: produtos });
+  }).catch(err => {
+    console.log("Erro ao buscar produtos: " + err)
+  });
+});
+
 app.listen(PORT, () => {
   console.log("Servidor esta rodando na porta: " + PORT);
 });

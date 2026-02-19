@@ -13,3 +13,4 @@ sequelize
   .catch((error) => {
     console.log("Erro ao conectar ao banco: " + error);
   });
+ 
