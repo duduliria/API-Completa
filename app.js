@@ -1,18 +1,22 @@
 import express from "express";
+import { Produto } from "./models/Produtos.js";
 
 const app = express();
 const PORT = 3000;
 
-app.get("/", (req, res) => {
-  res.send("Seja bem-vindo ao nosso site");
-});
+app.post("/cadastro", (req, res) => {
 
-app.get("/artigos", (req, res) => {
-  res.send("Todos os artigos");
-});
-
-app.get("/contato", (req, res) => {
-  res.send("Deixe a sua mensagem");
+  Produto.create({
+    nome: req.body.nome,
+    preco: req.body.preco,
+    descricao: req.body.descricao,
+  })
+    .then(() => {
+      res.send('Produto cadastrado com sucesso!')
+    })
+    .catch((err) => {
+      console.log("Erro ao criar produto: " + err);
+    });
 });
 
 app.listen(PORT, () => {
