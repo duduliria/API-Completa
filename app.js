@@ -39,6 +39,16 @@ app.patch("/atualizar/:id", (req, res) => {
     });
 });
 
+app.delete("/delete/:id", (req, res) => {
+  Produto.destroy({ where: { id: req.params.id } })
+    .then(() => {
+      res.send("Produto deletado com sucesso");
+    })
+    .catch((err) => {
+      console.log("Erro ao deletar produto: " + err);
+    });
+});
+
 app.get("/", (req, res) => {
   Produto.findAll()
     .then((produtos) => {
