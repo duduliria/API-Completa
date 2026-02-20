@@ -22,6 +22,16 @@ app.post("/cadastro", (req, res) => {
     });
 });
 
+app.get("/:nome", (req, res) => {
+  Produto.findAll({ where: { nome: req.params.nome } })
+    .then((produto) => {
+      res.send(produto);
+    })
+    .catch((err) => {
+      console.log("Produto nao existe na base de dados: " + err);
+    });
+});
+
 app.patch("/atualizar/:id", (req, res) => {
   Produto.update(
     {
