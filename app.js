@@ -22,12 +22,31 @@ app.post("/cadastro", (req, res) => {
     });
 });
 
+app.patch("/atualizar/:id", (req, res) => {
+  Produto.update(
+    {
+      nome: req.body.nome,
+      preco: req.body.preco,
+      descricao: req.body.descricao,
+    },
+    { where: { id: req.params.id } },
+  )
+    .then(() => {
+      res.send("Atualizado com sucesso");
+    })
+    .catch((err) => {
+      console.log("Erro ao atualizar os dados do produto: " + err);
+    });
+});
+
 app.get("/", (req, res) => {
-  Produto.findAll().then((produtos) => {
-    res.send({ produtos: produtos });
-  }).catch(err => {
-    console.log("Erro ao buscar produtos: " + err)
-  });
+  Produto.findAll()
+    .then((produtos) => {
+      res.send({ produtos: produtos });
+    })
+    .catch((err) => {
+      console.log("Erro ao buscar produtos: " + err);
+    });
 });
 
 app.listen(PORT, () => {
