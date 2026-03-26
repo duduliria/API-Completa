@@ -1,12 +1,12 @@
 import express from "express";
+import cors from "cors";
 import { Produto } from "./models/Produtos.js";
 
 const app = express();
 const PORT = 3000;
 
-// configura body parse
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.post("/cadastro", (req, res) => {
   const { nome, preco, descricao } = req.body;
@@ -62,29 +62,27 @@ app.patch("/atualizar/:id", (req, res) => {
     });
 });
 
-app.delete("/delete/:id", (req, res) => {
-  Produto.destroy({ where: { id: req.params.id } })
-    .then((linhasAfetadas) => {
-      if (linhasAfetadas === 0) {
-        return res.status(404).json({ erro: "Produto não encontrado" });
-      }
+app
+  .delete("/delete/:id", (req, res) => {
+    Produto.destroy({ where: { id: req.params.id } })
+      .then((linhasAfetadas) => {
+        if (linhasAfetadas === 0) {
+          return res.status(404).json({ erro: "Produto não encontrado" });
+        }
 
-      res.status(204).send();
-    })
-    .catch(() => {
-      res.status(500).json({ erro: "Erro ao deletar produto" });
-    });
-});
+        res.status(204).send();
+      })
+      .catch(() => {
+        res.status(500).json({ erro: "Erro ao deletar produto" });
+      });
+  })
 
-app.get("/", (req, res) => {
-  Produto.findAll()
-    .then((produtos) => {
-      res.status(200).json({ produtos });
-    })
-    .catch(() => {
-      res.status(500).json({ erro: "Erro ao buscar produtos" });
-    });
-});
+  .then((produtos) => {
+    res.status(200).json({ produtos });
+  })
+  .catch(() => {
+    res.status(500).json({ erro: "Erro ao buscar produtos" });
+  });
 
 app.listen(PORT, () => {
   console.log("Servidor esta rodando na porta: " + PORT);
